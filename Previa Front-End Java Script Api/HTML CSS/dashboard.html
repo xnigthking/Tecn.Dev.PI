@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rotina Saudável — Página Principal</title>
+  <meta name="description" content="Rotina Saudável — app para registrar hábitos, treinos e alimentação. Veja o protótipo e teste a experiência." />
+  <style>
+    :root{
+      --bg:#f7fbf8; --card:#ffffff; --accent:#2f9e44; --accent-2:#0ea5a0; --muted:#6b7280;
+      --text:#082032; --shadow: 0 10px 30px rgba(8,32,50,0.05);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(180deg,var(--bg),#eefaf0);color:var(--text);padding:28px;}
+    .wrap{max-width:1100px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#9be7b5,#2f9e44);display:grid;place-items:center;color:white;font-weight:800;flex:0 0 52px}
+    h1{margin:0;font-size:1.4rem}
+    p.lead{margin:6px 0 0;color:var(--muted);font-size:0.95rem}
+    nav{display:flex;gap:10px;align-items:center}
+    a.btn{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--accent);color:white;text-decoration:none;font-weight:600}
+    a.ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--text);padding:8px 12px;border-radius:8px;text-decoration:none}
+    .layout{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+    @media(max-width:980px){ .layout{grid-template-columns:1fr} .sidebar{order:2} }
+    .card{background:var(--card);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+    .features{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+    @media(max-width:680px){ .features{grid-template-columns:1fr} }
+    .feat{display:flex;gap:12px;align-items:flex-start}
+    .icon{width:44px;height:44;border-radius:10px;background:linear-gradient(135deg,#e6fff1,#c9f6da);display:grid;place-items:center;color:var(--accent);font-weight:700}
+    .muted{color:var(--muted)}
+    .preview{height:360px;border-radius:10px;border:1px solid rgba(8,32,50,0.04);overflow:hidden}
+    .stats{display:flex;gap:10px;margin-top:12px}
+    .stat{background:#fbfffb;padding:10px;border-radius:10px;flex:1;text-align:center}
+    .stat strong{display:block;font-size:1.2rem}
+    footer{margin-top:22px;text-align:center;color:var(--muted);font-size:0.9rem}
+    .kbd{background:#f1f5f9;padding:6px 8px;border-radius:6px;border:1px solid rgba(8,32,50,0.03);font-weight:600}
+    .note{font-size:0.9rem;color:var(--muted);margin-top:8px}
+    /* small accessibility/UX tweaks */
+    button, a.btn, .ghost { cursor:pointer; }
+    button.ghost { background:transparent;border:1px solid rgba(15,23,42,0.06);padding:8px 12px;border-radius:8px }
+    .sr-only { position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; border:0; padding:0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">RS</div>
+        <div>
+          <h1>Rotina Saudável</h1>
+          <p class="lead">Registre hábitos, refeições e treinos — protótipo funcional para testar fluxos.</p>
+        </div>
+      </div>
+
+      <nav aria-label="Navegação principal">
+        <a class="ghost" href="#features">Recursos</a>
+        <a class="ghost" href="#como">Como funciona</a>
+        <a class="btn" href="outro.html" id="openPrototype" aria-describedby="openPrototypeDesc">Abrir Protótipo</a>
+        <span id="openPrototypeDesc" class="sr-only">Abre o protótipo em nova aba ou no preview abaixo</span>
+      </nav>
+    </header>
+
+    <main class="layout" role="main">
+      <!-- Conteúdo principal -->
+      <section>
+        <div class="card" aria-labelledby="testarProt">
+          <h2 id="testarProt" style="margin:0 0 6px">Testar o protótipo</h2>
+          <div class="muted">Clique em "Abrir Protótipo" para acessar a versão interativa (arquivo <span class="kbd">outro.html</span>).</div>
+
+          <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn" href="outro.html" target="_blank" rel="noopener">Abrir em nova aba</a>
+            <button id="btnReloadPreview" class="ghost" type="button">Recarregar preview</button>
+            <button id="btnSeed" class="ghost" type="button">Popular dados de exemplo</button>
+          </div>
+
+          <div class="note">Preview abaixo usa um <em>iframe</em>. Se trabalhar localmente, permita abrir arquivos locais no navegador (ou sirva via um servidor simples: <code>npx serve</code> / VSCode Live Server).</div>
+
+          <div style="margin-top:14px" class="preview card" aria-live="polite">
+            <!-- iframe apontando para outro.html -->
+            <iframe id="previewFrame" title="Preview do protótipo Rotina Saudável" src="outro.html" style="border:0;width:100%;height:100%;display:block"></iframe>
+          </div>
+
+          <div class="stats" style="margin-top:12px" aria-hidden="false">
+            <div class="stat">
+              <div class="muted">Hábitos</div>
+              <strong id="statHabits">—</strong>
+            </div>
+            <div class="stat">
+              <div class="muted">Concluídos hoje</div>
+              <strong id="statToday">—</strong>
+            </div>
+            <div class="stat">
+              <div class="muted">Registros (ref/treinos)</div>
+              <strong id="statRegs">—</strong>
+            </div>
+          </div>
+        </div>
+
+        <div id="features" class="card" style="margin-top:16px">
+          <h3 style="margin:0 0 8px">Principais recursos (protótipo)</h3>
+          <div class="features">
+            <div class="feat"><div class="icon" aria-hidden="true">H</div><div><strong>CRUD de hábitos</strong><div class="muted">Criar, editar, excluir e marcar como feito.</div></div></div>
+            <div class="feat"><div class="icon" aria-hidden="true">R</div><div><strong>Registro de refeições</strong><div class="muted">Adicionar refeição com calorias e notas.</div></div></div>
+            <div class="feat"><div class="icon" aria-hidden="true">T</div><div><strong>Registro de treinos</strong><div class="muted">Tipo, duração e observações.</div></div></div>
+            <div class="feat"><div class="icon" aria-hidden="true">D</div><div><strong>Dashboard simples</strong><div class="muted">Progresso diário, contagem semanal e streak.</div></div></div>
+          </div>
+        </div>
+
+        <div id="como" class="card" style="margin-top:16px">
+          <h3 style="margin:0 0 8px">Como funciona (rápido)</h3>
+          <ol style="margin:0 0 0 18px;color:var(--muted)">
+            <li>Abrir protótipo (outro.html).</li>
+            <li>Criar hábitos e registrar refeições/treinos.</li>
+            <li>O protótipo salva tudo em <code>localStorage</code> — os valores aparecem aqui no painel.</li>
+            <li>Use "Popular dados de exemplo" caso queira reiniciar com conteúdo inicial.</li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="sidebar" aria-label="Barra lateral">
+        <div class="card">
+          <h4 style="margin:0 0 6px">Quick links</h4>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+            <a class="ghost" href="outro.html" target="_blank" rel="noopener">Abrir protótipo (nova aba)</a>
+            <a class="ghost" href="#features">Ver recursos</a>
+            <a class="ghost" href="#como">Como funciona</a>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h4 style="margin:0 0 6px">Dicas</h4>
+          <ul style="margin:0 0 0 18px;color:var(--muted)">
+            <li>Se trabalhar localmente e o iframe não carregar, rode um servidor estático.</li>
+            <li>Use as mesmas chaves de localStorage se quiser compartilhar dados entre as páginas.</li>
+            <li>Para produção, converta o protótipo para React/Next ou Flutter Web e adicione backend.</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      Protótipo — Rotina Saudável • Arquivos locais: <span class="kbd">index.html</span> e <span class="kbd">outro.html</span>
+    </footer>
+  </div>
+
+  <script>
+    /* 
+      Leitura de métricas diretamente do localStorage (mesmas chaves do protótipo):
+      - rs_habits_v1
+      - rs_habitlogs_v1
+      - rs_meals_v1
+      - rs_workouts_v1
+    */
+    const KEY = {
+      HABITS: 'rs_habits_v1',
+      HABITLOGS: 'rs_habitlogs_v1',
+      MEALS: 'rs_meals_v1',
+      WORKOUTS: 'rs_workouts_v1'
+    };
+
+    function getJSON(k){ try { return JSON.parse(localStorage.getItem(k) || '[]') } catch(e){ return []; } }
+
+    function updateStats(){
+      const habits = getJSON(KEY.HABITS);
+      const logs = getJSON(KEY.HABITLOGS);
+      const meals = getJSON(KEY.MEALS);
+      const workouts = getJSON(KEY.WORKOUTS);
+
+      // hábitos totais
+      document.getElementById('statHabits').textContent = habits.length;
+      // concluídos hoje (unique habitIds in today's logs)
+      const today = new Date().toISOString().slice(0,10);
+      const todayLogs = Array.isArray(logs) ? logs.filter(l=> l.date === today ) : [];
+      const doneCount = new Set(todayLogs.map(l=>l.habitId)).size;
+      document.getElementById('statToday').textContent = doneCount;
+      // registros (meals + workouts)
+      document.getElementById('statRegs').textContent = (meals.length + workouts.length);
+    }
+
+    // Botões
+    document.getElementById('btnReloadPreview').addEventListener('click', ()=> {
+      const f = document.getElementById('previewFrame');
+      // tentar reload via contentWindow (melhor que reatribuir src)
+      try {
+        if (f.contentWindow && f.contentWindow.location) {
+          f.contentWindow.location.reload();
+        } else {
+          f.src = f.src;
+        }
+      } catch (err) {
+        // fallback
+        f.src = f.src;
+      }
+      // atualização após reload (demora pequena)
+      setTimeout(updateStats, 400);
+    }, {passive:true});
+
+    document.getElementById('btnSeed').addEventListener('click', ()=> {
+      // Popula dados de exemplo (mesmos do protótipo)
+      if(confirm('Popular localStorage com dados de exemplo? Isso não apagará outros dados.')) {
+        const sampleHabits = [
+          { id: 'id1', title: 'Beber 2L de água', time: '09:00', active:true },
+          { id: 'id2', title: 'Caminhada 20 min', time: '18:30', active:true },
+          { id: 'id3', title: 'Meditar 10 min', time: '07:30', active:true }
+        ];
+        localStorage.setItem(KEY.HABITS, JSON.stringify(sampleHabits));
+        localStorage.setItem(KEY.HABITLOGS, JSON.stringify([]));
+        localStorage.setItem(KEY.MEALS, JSON.stringify([]));
+        localStorage.setItem(KEY.WORKOUTS, JSON.stringify([]));
+        updateStats();
+        alert('Dados de exemplo criados. Recarregue o protótipo para ver o conteúdo.');
+      }
+    }, {passive:true});
+
+    // Sincroniza mudanças feitas no iframe / outra aba
+    window.addEventListener('storage', (e)=> {
+      if ([KEY.HABITS, KEY.HABITLOGS, KEY.MEALS, KEY.WORKOUTS].includes(e.key) || e.key === null) {
+        updateStats();
+      }
+    });
+
+    // Atualiza periodicamente caso queira, mas também respondemos a events
+    const updateInterval = setInterval(updateStats, 2000);
+    // invoca ao carregar
+    updateStats();
+
+    // Tenta detectar erro do iframe (por exemplo política de arquivos locais)
+    const frame = document.getElementById('previewFrame');
+    frame.addEventListener('error', ()=> {
+      console.warn('Erro ao carregar iframe — verifique se "outro.html" está acessível. Para testes locais, rode um servidor (ex: npx serve).');
+    });
+    // Cleanup se necessário (não estritamente necessário em página estática)
+    window.addEventListener('unload', ()=> clearInterval(updateInterval));
+  </script>
+</body>
+</html>

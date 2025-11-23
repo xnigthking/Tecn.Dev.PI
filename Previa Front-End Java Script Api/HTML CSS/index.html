@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mundo Fitness — Treine com Saúde</title>
+  <meta name="description" content="Treinos personalizados, alimentação saudável, hidratação inteligente e planos sob medida para você.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-inter bg-gray-50 text-gray-800">
+  <header class="bg-white shadow fixed top-0 left-0 w-full z-50">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#inicio" class="flex items-center space-x-2">
+        <img src="img/logoTipo.png" alt="Logo Mundo Fitness" class="h-10">
+        <span class="text-xl font-bold">Mundo Fitness</span>
+      </a>
+      <button id="navToggle" class="lg:hidden text-3xl">☰</button>
+      <nav id="navMenu" class="hidden lg:flex space-x-6">
+        <a href="#inicio" class="hover:text-blue-600">Início</a>
+        <a href="#alimentacao" class="hover:text-blue-600">Alimentação</a>
+        <a href="#exercicio" class="hover:text-blue-600">Exercício</a>
+        <a href="#agua" class="hover:text-blue-600">Hidratação</a>
+        <a href="#planos" class="hover:text-blue-600">Planos</a>
+        <a href="login.html" class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white">Entrar</a>
+        <a href="register.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Cadastrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio" class="pt-24">
+    <section class="relative text-center bg-gradient-to-b from-blue-600 to-blue-400 text-white py-20">
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Seu corpo. Seu ritmo. Seu Mundo Fitness.</h1>
+      <p class="max-w-2xl mx-auto mb-8">Treinos personalizados, alimentação saudável e lembretes automáticos para transformar sua rotina.</p>
+      <div class="space-x-4">
+        <a href="register.html" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">Comece Agora</a>
+        <a href="#planos" class="border border-white px-6 py-3 rounded-lg hover:bg-white hover:text-blue-600">Ver Planos</a>
+      </div>
+    </section>
+
+    <section id="alimentacao" class="py-16 bg-white">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-4 text-center">🍎 Alimentação Saudável</h2>
+        <p class="text-center mb-8">Descubra o equilíbrio perfeito entre energia e bem-estar. Receba planos e dicas adaptadas ao seu estilo de vida.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <img src="img/postAlimentacao.jpg" alt="Pratos saudáveis" class="rounded-lg shadow-md">
+          <img src="img/postAlimentacao2.jpg" alt="Frutas e legumes" class="rounded-lg shadow-md">
+          <img src="img/postAlimentacao3.jpg" alt="Fatias de limão" class="rounded-lg shadow-md">
+        </div>
+      </div>
+    </section>
+
+    <section id="exercicio" class="py-16 bg-gray-100">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-4 text-center">💪 Exercícios Personalizados</h2>
+        <p class="text-center mb-8">Monitore seus treinos e veja seu progresso com dicas inteligentes e lembretes automáticos.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <img src="img/postExercicio.jpg" alt="Treino diário" class="rounded-lg shadow-md">
+          <img src="img/postExercicio2.jpg" alt="Alongamento" class="rounded-lg shadow-md">
+          <img src="img/postExercicio3.jpg" alt="Corrida ao ar livre" class="rounded-lg shadow-md">
+        </div>
+      </div>
+    </section>
+
+    <section id="agua" class="py-16 bg-white">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-4">💧 Hidratação Inteligente</h2>
+        <p class="mb-8">Mantenha-se hidratado com lembretes e conquiste medalhas por metas diárias!</p>
+        <img src="img/postAgua.png" alt="Beber água faz bem" class="mx-auto rounded-lg shadow-md max-w-md">
+      </div>
+    </section>
+
+    <section id="planos" class="py-16 bg-gray-100">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-8">🏆 Planos e Benefícios</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="border rounded-2xl p-8 bg-white shadow-md">
+            <h3 class="text-2xl font-semibold mb-2">Gratuito</h3>
+            <p class="mb-4">Acesse conteúdo básico e crie lembretes manuais.</p>
+            <a href="register.html" class="border border-blue-600 text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-600 hover:text-white">Experimente</a>
+          </div>
+          <div class="border-2 border-blue-600 rounded-2xl p-8 bg-blue-50 shadow-lg">
+            <h3 class="text-2xl font-semibold mb-2">Premium</h3>
+            <p class="mb-4">Treinos personalizados, alertas automáticos e integração com smartwatch.</p>
+            <a href="register.html" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Assinar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-16 bg-blue-600 text-white text-center">
+      <div class="container mx-auto px-6">
+        <h3 class="text-2xl font-semibold mb-4">Quer receber dicas semanais?</h3>
+        <form class="flex flex-col md:flex-row justify-center gap-4 max-w-lg mx-auto">
+          <input type="email" placeholder="Seu melhor e-mail" required class="w-full p-3 rounded-lg text-gray-800">
+          <button type="submit" class="bg-white text-blue-600 font-semibold px-6 py-3 rounded-lg hover:bg-gray-100">Inscrever</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-gray-900 text-white py-6">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between">
+      <p>© 2025 Mundo Fitness | Todos os direitos reservados</p>
+      <div class="flex space-x-4 mt-4 md:mt-0">
+        <a href="#" class="hover:text-blue-400">Instagram</a>
+        <a href="#" class="hover:text-blue-400">Facebook</a>
+        <a href="#" class="hover:text-blue-400">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('navMenu');
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('flex');
+      menu.classList.toggle('flex-col');
+      menu.classList.toggle('space-y-4');
+      menu.classList.toggle('bg-white');
+      menu.classList.toggle('p-4');
+    });
+  </script>
+</body>
+</html>
