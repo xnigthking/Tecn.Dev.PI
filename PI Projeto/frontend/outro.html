@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rotina Saudável — Protótipo</title>
+  <meta name="description" content="Protótipo do app Rotina Saudável — gerencie hábitos, refeições e treinos (salva em localStorage)." />
+  <style>
+    :root{
+      --bg:#f6faf6; --card:#ffffff; --accent:#2f9e44; --muted:#6b7280; --danger:#ef4444;
+      --shadow: 0 6px 18px rgba(16,24,40,0.06);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:#0f172a;line-height:1.35;padding:20px;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:44px;height:44;border-radius:8px;background:linear-gradient(135deg,#9be7b5,#2f9e44);display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    h1{font-size:1.05rem;margin:0}
+    .controls{display:flex;gap:8px;align-items:center}
+    button {background:var(--accent);color:#fff;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+    button.ghost{background:transparent;color:var(--accent);border:1px solid rgba(47,158,68,0.15)}
+    .layout{display:grid;grid-template-columns:1fr 340px;gap:18px}
+    @media(max-width:900px){ .layout{grid-template-columns:1fr} .sidebar{order:2} }
+    .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+    .home-top{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .progress{display:flex;align-items:center;gap:10px}
+    .circle{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#ecfdf1,#dff7e4);font-weight:700;color:var(--accent)}
+    .small{font-size:0.85rem;color:var(--muted)}
+    .list{display:flex;flex-direction:column;gap:8px}
+    .habit{display:flex;align-items:center;justify-content:space-between;padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.04)}
+    .habit .left{display:flex;gap:10px;align-items:center}
+    .badge{background:#eefaf0;color:var(--accent);padding:6px 8px;border-radius:999px;font-size:0.8rem}
+    form {display:flex;flex-direction:column;gap:8px}
+    input,select,textarea {padding:8px;border-radius:8px;border:1px solid #e6eef0}
+    .row{display:flex;gap:8px}
+    .side-section{display:flex;flex-direction:column;gap:10px}
+    .muted{color:var(--muted);font-size:0.9rem}
+    .toast{position:fixed;right:20px;bottom:20px;background:#111827;color:white;padding:10px 14px;border-radius:8px;box-shadow:0 8px 24px rgba(2,6,23,0.4)}
+    .linkbtn{background:transparent;border:0;color:var(--accent);cursor:pointer}
+    .tiny{font-size:0.85rem;color:var(--muted)}
+    .danger{background:transparent;border:1px solid rgba(239,68,68,0.12);color:var(--danger)}
+    .sr-only { position:absolute !important; height:1px; width:1px; overflow:hidden; clip:rect(1px,1px,1px,1px); white-space:nowrap; border:0; padding:0; }
+    a.brand-link { display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; }
+    a.brand-link:focus { outline:2px solid rgba(47,158,68,0.25); outline-offset:3px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <!-- Link adicionado: volta para index.html. target="_top" garante saída do iframe -->
+      <a href="dashboard.html" class="brand-link" target="_top" aria-label="Voltar para a página principal">
+        <div class="logo" aria-hidden="true">RS</div>
+        <div>
+          <h1>Rotina Saudável</h1>
+          <div class="tiny">Protótipo — registrar hábitos, refeições e treinos</div>
+        </div>
+      </a>
+    </div>
+    <div class="controls">
+      <div class="small muted" id="userLabel">Convidado</div>
+      <button id="btnOpenLogin" class="ghost" type="button">Login</button>
+    </div>
+  </header>
+
+  <main class="layout" role="main">
+    <!-- Conteúdo principal -->
+    <section>
+      <div class="card home-top" aria-labelledby="resumoHoje">
+        <div>
+          <div id="resumoHoje" class="small muted">Resumo de hoje</div>
+          <div style="display:flex;gap:14px;align-items:center;margin-top:8px">
+            <div class="progress">
+              <div class="circle" id="progressCircle" aria-live="polite">0%</div>
+              <div>
+                <div style="font-weight:700" id="todayDone">0 / 0 hábitos</div>
+                <div class="small muted">Toque para marcar hábito como feito</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <button id="btnAddHabit" type="button">+ Hábito</button>
+          <button id="btnAddMeal" class="ghost" type="button">+ Refeição</button>
+          <button id="btnAddWorkout" class="ghost" type="button">+ Treino</button>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-weight:700">Hábitos</div>
+          <div class="tiny muted">Arrume e gerencie seus hábitos</div>
+        </div>
+        <div class="list" id="habitsList" style="margin-top:10px" aria-live="polite">
+          <!-- render hábitos -->
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-weight:700">Últimos registros</div>
+          <div class="tiny muted">Refeições & treinos recentes</div>
+        </div>
+        <div id="recentList" style="margin-top:10px" class="list" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Painel lateral">
+      <div class="card side-section">
+        <div style="font-weight:700">Dashboard</div>
+        <div class="muted">Resumo semanal</div>
+        <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px">
+          <div>
+            <div style="font-weight:700" id="weeklyDone">0</div>
+            <div class="small muted">conclusões (7 dias)</div>
+          </div>
+          <div>
+            <div class="badge" id="streak">0 dias</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <div style="font-weight:700">Configuração rápida</div>
+        <div class="tiny muted" style="margin-top:8px">Defina metas e lembretes (futuro)</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="btnReset" class="danger" type="button">Reset DB</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Modals (simples implementados como sections) -->
+  <div id="modal" style="display:none;position:fixed;inset:0;background:rgba(2,6,23,0.45);padding:28px;align-items:center;justify-content:center" role="dialog" aria-modal="true">
+    <div class="card" style="max-width:520px;width:100%;position:relative" id="modalContent" aria-live="polite">
+      <!-- conteúdo inserido dinamicamente -->
+    </div>
+  </div>
+
+  <div id="toast" style="display:none" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /*******************************
+     * Protótipo de frontend - JS
+     * Salva tudo em localStorage
+     *******************************/
+    const KEY = {
+      HABITS: 'rs_habits_v1',
+      HABITLOGS: 'rs_habitlogs_v1',
+      MEALS: 'rs_meals_v1',
+      WORKOUTS: 'rs_workouts_v1',
+      USER: 'rs_user_v1'
+    };
+
+    // Util: UID simples
+    const uid = () => ('id'+Math.random().toString(36).slice(2,9));
+
+    // Leitura/escrita localStorage
+    const db = {
+      get(k){ try { return JSON.parse(localStorage.getItem(k) || '[]') } catch(e){return []} },
+      set(k,v){ localStorage.setItem(k, JSON.stringify(v)) },
+      clearAll(){ Object.values(KEY).forEach(k=>localStorage.removeItem(k)) }
+    };
+
+    // Inicializa com exemplos se vazio
+    function seedIfEmpty(){
+      if(!db.get(KEY.HABITS).length){
+        const sample = [
+          { id: uid(), title: 'Beber 2L de água', time: '09:00', active:true },
+          { id: uid(), title: 'Caminhada 20 min', time: '18:30', active:true },
+          { id: uid(), title: 'Meditar 10 min', time: '07:30', active:true }
+        ];
+        db.set(KEY.HABITS, sample);
+      }
+    }
+
+    // Renderers
+    const $habitsList = document.getElementById('habitsList');
+    const $recent = document.getElementById('recentList');
+    const $progressCircle = document.getElementById('progressCircle');
+    const $todayDone = document.getElementById('todayDone');
+    const $weeklyDone = document.getElementById('weeklyDone');
+    const $streak = document.getElementById('streak');
+    const $userLabel = document.getElementById('userLabel');
+
+    // Helpers de data
+    const todayISO = ()=> new Date().toISOString().slice(0,10);
+    const daysAgoISO = (n)=> {
+      const d = new Date(); d.setDate(d.getDate()-n);
+      return d.toISOString().slice(0,10);
+    }
+
+    // CRUD Habits
+    function getHabits(){ return db.get(KEY.HABITS) }
+    function saveHabits(list){ db.set(KEY.HABITS, list) }
+    function addHabit(h){ const arr=getHabits(); arr.unshift(h); saveHabits(arr); toast('Hábito criado') }
+    function removeHabit(id){ saveHabits(getHabits().filter(h=>h.id!==id)); toast('Hábito removido') }
+    function toggleHabitDone(habitId){
+      const logs = db.get(KEY.HABITLOGS);
+      const exists = logs.find(l=>l.habitId===habitId && l.date===todayISO());
+      if(exists){
+        // desmarca
+        db.set(KEY.HABITLOGS, logs.filter(l=>!(l.habitId===habitId && l.date===todayISO())));
+        toast('Hábito desmarcado');
+      } else {
+        logs.push({ id: uid(), habitId, date: todayISO(), completed: true });
+        db.set(KEY.HABITLOGS, logs);
+        toast('Hábito marcado como feito ✅');
+      }
+      renderAll();
+    }
+
+    // Meals & workouts
+    function addMeal(m){ const arr=db.get(KEY.MEALS); arr.unshift(m); db.set(KEY.MEALS,arr); toast('Refeição adicionada') ; renderAll() }
+    function addWorkout(w){ const arr=db.get(KEY.WORKOUTS); arr.unshift(w); db.set(KEY.WORKOUTS,arr); toast('Treino adicionado'); renderAll() }
+
+    // UI render
+    function renderHabits(){
+      const habits = getHabits();
+      const logs = db.get(KEY.HABITLOGS);
+      const todayLogs = logs.filter(l=>l.date===todayISO());
+      $habitsList.innerHTML = '';
+      if(!habits.length) $habitsList.innerHTML = '<div class="muted">Nenhum hábito. Clique em + Hábito</div>';
+      habits.forEach(h=>{
+        const done = !!todayLogs.find(l=>l.habitId===h.id && l.date===todayISO());
+        const el = document.createElement('div');
+        el.className = 'habit';
+        el.innerHTML = `
+          <div class="left">
+            <div style="width:10px;height:10px;border-radius:3px;background:${done? 'var(--accent)':'#e6eef0'}" aria-hidden="true"></div>
+            <div>
+              <div style="font-weight:600">${escapeHtml(h.title)}</div>
+              <div class="tiny muted">${h.time || ''}</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <button class="linkbtn" data-action="toggle" data-id="${h.id}" aria-pressed="${done}">${done? 'Desfazer':'Marcar'}</button>
+            <button class="linkbtn" data-action="del" data-id="${h.id}" style="color:var(--danger)">Excluir</button>
+          </div>
+        `;
+        $habitsList.appendChild(el);
+      });
+    }
+
+    function renderRecent(){
+      const meals = db.get(KEY.MEALS).slice(0,4);
+      const w = db.get(KEY.WORKOUTS).slice(0,4);
+      const nodes = [];
+      meals.forEach(m => nodes.push({type:'meal', text: `${m.title} • ${m.calories||'—'} kcal`, time: new Date(m.datetime).toLocaleString() }));
+      w.forEach(x => nodes.push({type:'work', text: `${x.type} • ${x.duration} min`, time: new Date(x.datetime).toLocaleString() }));
+      $recent.innerHTML = '';
+      if(!nodes.length) $recent.innerHTML = '<div class="muted">Ainda sem registros. Use + Refeição / + Treino</div>';
+      nodes.forEach(n=>{
+        const el = document.createElement('div');
+        el.className = 'habit';
+        el.innerHTML = `
+          <div>
+            <div style="font-weight:600">${escapeHtml(n.text)}</div>
+            <div class="tiny muted">${n.time}</div>
+          </div>
+        `;
+        $recent.appendChild(el);
+      });
+    }
+
+    function renderDashboard(){
+      const logs = db.get(KEY.HABITLOGS);
+      // weekly done count
+      const last7 = Array.from({length:7}).map((_,i)=> daysAgoISO(i));
+      const weeklyDone = logs.filter(l=> last7.includes(l.date)).length;
+      $weeklyDone.textContent = weeklyDone;
+      // streak (consecutive days with >=1 done)
+      let streak = 0;
+      for(let i=0;i<14;i++){
+        const d = daysAgoISO(i);
+        const has = logs.find(l=>l.date===d);
+        if(has) streak++; else break;
+      }
+      $streak.textContent = streak + ' dias';
+      // today progress
+      const habits = getHabits();
+      const todayLogs = logs.filter(l=>l.date===todayISO());
+      const doneCount = new Set(todayLogs.map(l=>l.habitId)).size;
+      const total = habits.length;
+      const pct = total ? Math.round((doneCount/total)*100) : 0;
+      $progressCircle.textContent = pct + '%';
+      $todayDone.textContent = `${doneCount} / ${total} hábitos`;
+    }
+
+    function renderAll(){ renderHabits(); renderRecent(); renderDashboard(); }
+
+    // Toaster
+    function toast(msg){ const t = document.getElementById('toast'); t.textContent = msg; t.style.display='block'; setTimeout(()=>t.style.display='none',1400) }
+
+    // Escapar HTML simples
+    function escapeHtml(s){ return (''+s).replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])) }
+
+    // Modal helpers
+    const $modal = document.getElementById('modal');
+    const $modalContent = document.getElementById('modalContent');
+    function openModal(html){
+      $modalContent.innerHTML = html;
+      $modal.style.display = 'flex';
+      // attach close handlers
+      $modal.querySelectorAll('[data-close]').forEach(btn=>btn.addEventListener('click', closeModal));
+      // bind forms
+      const f = $modalContent.querySelector('form');
+      if(f) f.addEventListener('submit', handleModalForm);
+    }
+    function closeModal(){ $modal.style.display='none'; $modalContent.innerHTML=''; }
+
+    // Form submit handler for modal forms (single entry point)
+    function handleModalForm(e){
+      e.preventDefault();
+      const form = e.target;
+      const type = form.dataset.type;
+      if(type === 'habit'){
+        const title = form.title.value.trim(); const time = form.time.value;
+        if(!title){ alert('Digite o nome do hábito'); return; }
+        addHabit({ id: uid(), title, time, active:true });
+      }
+      if(type === 'meal'){
+        const title = form.title.value.trim(); const c = form.calories.value.trim();
+        addMeal({ id: uid(), title: title||'Refeição', calories: c||null, datetime: new Date().toISOString(), note: form.note.value||''})
+      }
+      if(type === 'workout'){
+        const typeName = form.type.value; const dur = form.duration.value;
+        addWorkout({ id: uid(), type: typeName, duration: dur||0, datetime: new Date().toISOString(), note: form.note.value||''})
+      }
+      closeModal();
+    }
+
+    // Bindings - delegated
+    document.addEventListener('click', (e)=> {
+      // habits actions
+      const a = e.target.closest('[data-action]');
+      if(a){
+        const act = a.dataset.action; const id = a.dataset.id;
+        if(act === 'toggle') toggleHabitDone(id);
+        if(act === 'del'){ if(confirm('Excluir hábito?')){ removeHabit(id); renderAll(); } }
+      }
+    });
+
+    // Buttons
+    document.getElementById('btnAddHabit').addEventListener('click', ()=> {
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Criar Hábito</div><button data-close class="linkbtn">Fechar</button>
+        </div>
+        <form data-type="habit" style="margin-top:12px">
+          <label>Nome<input name="title" placeholder="Ex: Beber água" required></label>
+          <label>Horário<input name="time" type="time"></label>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button data-close type="button" class="ghost">Cancelar</button>
+            <button type="submit">Salvar</button>
+          </div>
+        </form>
+      `);
+    });
+    document.getElementById('btnAddMeal').addEventListener('click', ()=> {
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Registrar Refeição</div><button data-close class="linkbtn">Fechar</button>
+        </div>
+        <form data-type="meal" style="margin-top:12px">
+          <label>Nome<input name="title" placeholder="Ex: Almoço"></label>
+          <label>Calorias<input name="calories" type="number" placeholder="kcal"></label>
+          <label>Observação<textarea name="note"></textarea></label>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button data-close type="button" class="ghost">Cancelar</button>
+            <button type="submit">Adicionar</button>
+          </div>
+        </form>
+      `);
+    });
+    document.getElementById('btnAddWorkout').addEventListener('click', ()=> {
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Registrar Treino</div><button data-close class="linkbtn">Fechar</button>
+        </div>
+        <form data-type="workout" style="margin-top:12px">
+          <label>Tipo<select name="type"><option>Corrida</option><option>Caminhada</option><option>Musculação</option></select></label>
+          <label>Duração (min)<input name="duration" type="number" placeholder="30"></label>
+          <label>Observação<textarea name="note"></textarea></label>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button data-close type="button" class="ghost">Cancelar</button>
+            <button type="submit">Adicionar</button>
+          </div>
+        </form>
+      `);
+    });
+
+    // Login modal (simulado)
+    document.getElementById('btnOpenLogin').addEventListener('click', ()=> {
+      openModal(`
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Login Rápido (protótipo)</div><button data-close class="linkbtn">Fechar</button>
+        </div>
+        <form data-type="login" style="margin-top:12px">
+          <label>Email<input name="email" type="email" placeholder="voce@exemplo.com" required></label>
+          <label>Nome<input name="name" placeholder="Seu nome (apenas para demo)"></label>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button data-close type="button" class="ghost">Cancelar</button>
+            <button type="submit">Entrar</button>
+          </div>
+        </form>
+      `);
+      // attach separate handler
+      $modalContent.querySelector('form').addEventListener('submit', (ev)=>{
+        ev.preventDefault();
+        const fd = new FormData(ev.target);
+        const name = fd.get('name') || fd.get('email').split('@')[0];
+        localStorage.setItem(KEY.USER, JSON.stringify({name, email: fd.get('email')}));
+        $userLabel.textContent = name;
+        toast('Entrou como ' + name);
+        closeModal();
+      }, {once:true});
+    });
+
+    // Reset db
+    document.getElementById('btnReset').addEventListener('click', ()=> {
+      if(confirm('Limpar todos os dados locais?')) {
+        db.clearAll(); init(); toast('Dados resetados');
+      }
+    });
+
+    // Escape click on backdrop to close
+    document.getElementById('modal').addEventListener('click', (e)=> {
+      if(e.target === document.getElementById('modal')) closeModal();
+    });
+
+    // Sincroniza alterações vindas de outra aba / pai (index.html)
+    window.addEventListener('storage', (e)=>{
+      if ([KEY.HABITS, KEY.HABITLOGS, KEY.MEALS, KEY.WORKOUTS, KEY.USER].includes(e.key) || e.key === null) {
+        renderAll();
+      }
+    });
+
+    // Init
+    function init(){
+      seedIfEmpty();
+      const user = JSON.parse(localStorage.getItem(KEY.USER) || 'null');
+      $userLabel.textContent = user?.name || 'Convidado';
+      renderAll();
+    }
+    init();
+  </script>
+</body>
+</html>
