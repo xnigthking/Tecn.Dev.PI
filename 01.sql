@@ -180,3 +180,5 @@ GROUP BY
   
 
 USE MundoFitnessDB;
+
+SELECT * FROM treinos;
