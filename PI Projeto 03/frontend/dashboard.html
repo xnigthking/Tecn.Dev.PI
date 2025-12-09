@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rotina Saudável — Dashboard</title>
+  <style>
+    :root {
+      --primary: rgba(73, 140, 244, 1);
+      --primary-light: rgba(73, 140, 244, 0.15);
+      --bg: #f9fbff;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --danger: #ef4444;
+      --shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ===== HEADER ===== */
+    header {
+      background: var(--card);
+      box-shadow: var(--shadow);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #3a6ad9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .brand .tiny {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .navbar button {
+      background: none;
+      border: 2px solid transparent;
+      color: #0f172a;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .navbar button:hover {
+      background: var(--primary-light);
+    }
+
+    .navbar button.active {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    /* ===== HAMBURGUER ===== */
+    #menuToggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width:768px) {
+      .navbar {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px 0;
+        box-shadow: var(--shadow);
+      }
+
+      .navbar.show {
+        display: flex;
+      }
+
+      #menuToggle {
+        display: block;
+      }
+    }
+
+    /* ===== MAIN ===== */
+    main {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      animation: fadein 0.3s;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h2 {
+      margin-top: 0;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .habit {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(15, 23, 42, 0.06);
+    }
+
+    .habit .left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .habit .tiny {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .circle {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #edf3ff, #dfe9ff);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #111827;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      display: none;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    button.ghost {
+      background: transparent;
+      border: 1px solid rgba(73, 140, 244, 0.4);
+      color: var(--primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    button.primary {
+      background: var(--primary);
+      color: white;
+      border: 0;
+      padding: 6px 12px;
+      border-radius: 6px;
+    }
+
+    .chart-bar {
+      height: 8px;
+      border-radius: 4px;
+      background: var(--primary-light);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .chart-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.3s;
+    }
+
+    .chart-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    @keyframes fadein {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="logo">RS</div>
+      <div>
+        <h1>Rotina Saudável</h1>
+        <div class="tiny">Painel de progresso e registros</div>
+      </div>
+    </div>
+    <button id="menuToggle">☰</button>
+    <nav class="navbar" id="navbar">
+      <button class="active" data-page="home">🏠 Início</button>
+      <button data-page="habits">📋 Hábitos</button>
+      <button data-page="meals">🍎 Refeições</button>
+      <button data-page="workouts">💪 Treinos</button>
+      <button data-page="water">💧 Hidratação</button>
+    </nav>
+    <div class="controls">
+      <div id="userLabel" class="small muted">Convidado</div>
+      <button id="btnLogout" class="ghost">Sair</button>
+    </div>
+  </header>
+
+  <main id="main"></main>
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /* ===== MENU RESPONSIVO ===== */
+    const menuToggle = document.getElementById('menuToggle');
+    const navbar = document.getElementById('navbar');
+    menuToggle.onclick = () => navbar.classList.toggle('show');
+
+    /* ===== STORAGE ===== */
+    const KEY = {
+      HABITS: 'rs_habits_v1',
+      HABITLOGS: 'rs_habitlogs_v1',
+      MEALS: 'rs_meals_v1',
+      WORKOUTS: 'rs_workouts_v1',
+      WATER: 'rs_hidration_v1',
+      USER: 'rs_user_v1'
+    };
+    const db = {
+      get(k) { try { return JSON.parse(localStorage.getItem(k) || '[]') } catch (e) { return [] } },
+      set(k, v) { localStorage.setItem(k, JSON.stringify(v)) },
+      clear() { Object.values(KEY).forEach(k => localStorage.removeItem(k)) }
+    };
+    const uid = () => 'id' + Math.random().toString(36).slice(2, 9);
+    const $main = document.getElementById('main');
+    const $toast = document.getElementById('toast');
+    function toast(msg) { $toast.textContent = msg; $toast.style.display = 'block'; setTimeout(() => $toast.style.display = 'none', 1600); }
+    function todayISO() { return new Date().toISOString().slice(0, 10); }
+    function daysAgoISO(n) { const d = new Date(); d.setDate(d.getDate() - n); return d.toISOString().slice(0, 10); }
+
+    /* ===== USER ===== */
+    function initUser() {
+      let u = JSON.parse(localStorage.getItem(KEY.USER) || 'null');
+      if (!u) {
+        const name = prompt('Digite seu nome para iniciar:') || 'Convidado';
+        localStorage.setItem(KEY.USER, JSON.stringify({ name }));
+        u = { name };
+      }
+      document.getElementById('userLabel').textContent = u.name;
+    }
+    document.getElementById('btnLogout').onclick = () => {
+      localStorage.removeItem(KEY.USER);
+      toast('Sessão encerrada');
+      setTimeout(() => location.reload(), 1000);
+    };
+
+    /* ===== DASHBOARD (INÍCIO) ===== */
+    function renderHome() {
+      const habits = db.get(KEY.HABITS);
+      const logs = db.get(KEY.HABITLOGS);
+      const meals = db.get(KEY.MEALS);
+      const workouts = db.get(KEY.WORKOUTS);
+      const waters = db.get(KEY.WATER);
+      const today = todayISO();
+      const totalHabits = habits.length;
+      const doneToday = logs.filter(l => l.date === today).length;
+      const pct = totalHabits ? Math.round(doneToday / totalHabits * 100) : 0;
+      const rec = waters.find(x => x.date === today) || { amount: 0 };
+
+      const last7 = Array.from({ length: 7 }).map((_, i) => daysAgoISO(6 - i));
+      const weeklyData = last7.map(d => {
+        const dayLogs = logs.filter(l => l.date === d).length;
+        const dayTotal = totalHabits || 1;
+        return { date: d, pct: Math.round(dayLogs / dayTotal * 100) };
+      });
+
+      let html = `
+  <div class="card">
+    <h2>Resumo de Hoje</h2>
+    <div class="progress">
+      <div class="circle">${pct}%</div>
+      <div><div><strong>${doneToday}</strong> de ${totalHabits} hábitos concluídos</div>
+      <div class="tiny">Continue assim 💪</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📊 Progresso Semanal</h2>
+    <div class="list">
+      ${weeklyData.map(d => `
+        <div>
+          <div class="chart-label"><span>${new Date(d.date).toLocaleDateString('pt-BR', { weekday: 'short' })}</span><span>${d.pct}%</span></div>
+          <div class="chart-bar"><div class="chart-bar-fill" style="width:${d.pct}%;"></div></div>
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>📋 Hábitos</h2>
+    ${habits.length ? habits.map(h => {
+        const done = logs.find(l => l.habitId === h.id && l.date === today);
+        return `<div class="habit"><div class="left"><div style="width:10px;height:10px;border-radius:3px;background:${done ? 'var(--primary)' : '#e6eef0'}"></div>
+        <div><div style="font-weight:600">${h.title}</div><div class="tiny">${h.time || ''}</div></div></div></div>`;
+      }).join('') : '<div class="tiny muted">Nenhum hábito criado.</div>'}
+  </div>
+
+  <div class="card">
+    <h2>🍎 Refeições Recentes</h2>
+    ${meals.length ? meals.slice(0, 3).map(m => `
+      <div class="habit"><div><strong>${m.title}</strong> — ${m.calories || '—'} kcal<br><div class="tiny">${new Date(m.datetime).toLocaleTimeString()}</div></div></div>`).join('')
+          : '<div class="tiny muted">Nenhuma refeição registrada.</div>'}
+  </div>
+
+  <div class="card">
+    <h2>💪 Últimos Treinos</h2>
+    ${workouts.length ? workouts.slice(0, 3).map(w => `
+      <div class="habit"><div><strong>${w.type}</strong> — ${w.duration || 0} min<br><div class="tiny">${new Date(w.datetime).toLocaleTimeString()}</div></div></div>`).join('')
+          : '<div class="tiny muted">Nenhum treino registrado.</div>'}
+  </div>
+
+  <div class="card">
+    <h2>💧 Hidratação</h2>
+    <p>Hoje: <strong>${rec.amount || 0}ml</strong></p>
+    <button class="primary" id="addWaterHome">+ 250ml</button>
+  </div>`;
+
+      $main.innerHTML = html;
+      document.getElementById('addWaterHome').onclick = () => {
+        const arr = db.get(KEY.WATER);
+        let r = arr.find(x => x.date === today);
+        if (!r) { r = { date: today, amount: 0 }; arr.push(r); }
+        r.amount += 250; db.set(KEY.WATER, arr); renderHome();
+      };
+    }
+
+    /* ===== OUTRAS SEÇÕES ===== */
+    function renderHabits() {
+      const arr = db.get(KEY.HABITS);
+      const logs = db.get(KEY.HABITLOGS);
+      const today = todayISO();
+      let html = `<div class="card"><h2>Hábitos</h2>
+  <button class="primary" id="addHabit">+ Novo</button>
+  <div class="list" style="margin-top:10px">`;
+      if (!arr.length) html += '<div class="muted tiny">Nenhum hábito criado.</div>';
+      arr.forEach(h => {
+        const done = logs.find(l => l.habitId === h.id && l.date === today);
+        html += `
+    <div class="habit">
+      <div class="left"><div style="width:10px;height:10px;border-radius:3px;background:${done ? 'var(--primary)' : '#e6eef0'}"></div>
+      <div><div style="font-weight:600">${h.title}</div><div class="tiny">${h.time || ''}</div></div></div>
+      <div style="display:flex;gap:6px;">
+        <button class="ghost" data-action="toggle" data-id="${h.id}">${done ? 'Desmarcar' : 'Marcar'}</button>
+        <button class="ghost" data-action="delete" style="color:var(--danger)">Excluir</button>
+      </div>
+    </div>`;
+      });
+      html += '</div></div>';
+      $main.innerHTML = html;
+
+      document.getElementById('addHabit').onclick = () => {
+        const title = prompt('Nome do hábito:');
+        if (!title) return;
+        const time = prompt('Horário (opcional):');
+        const data = db.get(KEY.HABITS);
+        data.push({ id: uid(), title, time });
+        db.set(KEY.HABITS, data);
+        renderHabits();
+      };
+      document.querySelectorAll('[data-action]').forEach(b => {
+        b.onclick = () => {
+          const id = b.dataset.id, act = b.dataset.action;
+          if (act === 'toggle') {
+            const logs = db.get(KEY.HABITLOGS);
+            const i = logs.findIndex(l => l.habitId === id && l.date === today);
+            if (i >= 0) logs.splice(i, 1); else logs.push({ habitId: id, date: today });
+            db.set(KEY.HABITLOGS, logs); renderHabits();
+          } else if (act === 'delete') {
+            if (confirm('Excluir hábito?')) {
+              const arr = db.get(KEY.HABITS).filter(x => x.id !== id);
+              db.set(KEY.HABITS, arr); renderHabits();
+            }
+          }
+        };
+      });
+    }
+
+    function renderMeals() {
+      const arr = db.get(KEY.MEALS);
+      let html = `<div class="card"><h2>Refeições</h2>
+  <button class="primary" id="addMeal">+ Registrar</button><div class="list" style="margin-top:10px">`;
+      if (!arr.length) html += '<div class="muted tiny">Nenhuma refeição registrada.</div>';
+      arr.forEach(m => {
+        html += `<div class="habit"><div><strong>${m.title}</strong><br><div class="tiny">${m.calories || '—'} kcal - ${new Date(m.datetime).toLocaleTimeString()}</div></div></div>`;
+      });
+      html += '</div></div>';
+      $main.innerHTML = html;
+      document.getElementById('addMeal').onclick = () => {
+        const title = prompt('Nome da refeição:');
+        const cal = prompt('Calorias:');
+        const arr = db.get(KEY.MEALS);
+        arr.unshift({ title, calories: cal, datetime: new Date().toISOString() });
+        db.set(KEY.MEALS, arr); renderMeals();
+      };
+    }
+
+    function renderWorkouts() {
+      const arr = db.get(KEY.WORKOUTS);
+      let html = `<div class="card"><h2>Treinos</h2><button class="primary" id="addWorkout">+ Adicionar</button>
+  <div class="list" style="margin-top:10px">`;
+      if (!arr.length) html += '<div class="muted tiny">Nenhum treino registrado.</div>';
+      arr.forEach(t => {
+        html += `<div class="habit"><div><strong>${t.type}</strong> - ${t.duration || 0} min<br><div class="tiny">${new Date(t.datetime).toLocaleTimeString()}</div></div></div>`;
+      });
+      html += '</div></div>';
+      $main.innerHTML = html;
+      document.getElementById('addWorkout').onclick = () => {
+        const type = prompt('Tipo:');
+        const dur = prompt('Duração (min):');
+        const arr = db.get(KEY.WORKOUTS);
+        arr.unshift({ type, duration: dur, datetime: new Date().toISOString() });
+        db.set(KEY.WORKOUTS, arr); renderWorkouts();
+      };
+    }
+
+    function renderWater() {
+      const arr = db.get(KEY.WATER);
+      const today = todayISO();
+      let rec = arr.find(x => x.date === today);
+      if (!rec) { rec = { date: today, amount: 0 }; arr.push(rec); db.set(KEY.WATER, arr); }
+      $main.innerHTML = `
+  <div class="card"><h2>Hidratação</h2><p>Hoje: <strong>${rec.amount}ml</strong></p>
+  <button class="primary" id="addWater">+ 250ml</button></div>`;
+      document.getElementById('addWater').onclick = () => {
+        rec.amount += 250; db.set(KEY.WATER, arr); renderWater();
+      };
+    }
+
+    /* ===== MENU ===== */
+    document.querySelectorAll('.navbar button').forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll('.navbar button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        navbar.classList.remove('show');
+        const p = btn.dataset.page;
+        if (p === 'home') renderHome();
+        if (p === 'habits') renderHabits();
+        if (p === 'meals') renderMeals();
+        if (p === 'workouts') renderWorkouts();
+        if (p === 'water') renderWater();
+      };
+    });
+
+    initUser();
+    renderHome();
+  </script>
+</body>
+
+</html>
