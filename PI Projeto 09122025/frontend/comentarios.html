@@ -1,0 +1,23 @@
+<!-- =====================================================
+  INFO RÁPIDA: Endpoints REST esperados (Node/Express)
+  -----------------------------------------------------
+  POST  /api/auth/login            { email, senha } -> { token, user }
+  POST  /api/auth/logout           (optional)
+  GET   /api/users/me              -> { user }
+  GET   /api/habits                -> [{id, titulo, horario, ativo, ...}]
+  POST  /api/habits               -> { titulo, horario } -> new habit
+  PUT   /api/habits/:id           -> update
+  DELETE /api/habits/:id          -> delete
+  POST  /api/habits/:id/toggle    -> toggle registro para hoje -> { done: true/false }
+  GET   /api/habits/records?days=30 -> [{date, habitId, concluido}]
+  GET   /api/summary?days=7       -> { totals... }
+  POST  /api/water/add            -> { quantidade_ml } (registrar +250)
+  GET   /api/water?days=30
+  POST  /api/meals                -> { title, calories }
+  GET   /api/meals?limit=5
+  POST  /api/workouts             -> { type, duration }
+  GET   /api/workouts?limit=5
+  POST  /api/export               -> (optional server-side export)
+  POST  /api/import               -> (optional server-side import)
+  NOTE: All endpoints devem aceitar e devolver JSON e validar Authorization: Bearer <token>.
+  ===================================================== -->

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MundoFitness — Dashboard</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+
+  <!-- Chart.js CDN (interactive charts) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header class="topbar" role="banner">
+    <div class="brand">
+      <div class="logo">MF</div>
+      <div>
+        <div class="app-title">MundoFitness</div>
+        <div class="app-sub">Rotina • Refeições • Treinos • Hidratação</div>
+      </div>
+    </div>
+
+    <nav class="nav" role="navigation" aria-label="Menu principal">
+      <button class="nav-btn active" id="nav-home" aria-controls="main">🏠 Início</button>
+      <button class="nav-btn" id="nav-habitos" aria-controls="main">📋 Hábitos</button>
+      <button class="nav-btn" id="nav-refeicoes" aria-controls="main">🍎 Refeições</button>
+      <button class="nav-btn" id="nav-treinos" aria-controls="main">💪 Treinos</button>
+      <button class="nav-btn" id="nav-water" aria-controls="main">💧 Hidratação</button>
+      <button class="nav-btn" id="nav-conta" aria-controls="main">⚙️ Conta</button>
+    </nav>
+
+    <div class="actions">
+      <button id="themeToggle" class="btn-ghost" aria-pressed="false" title="Alternar tema">🌓</button>
+      <div id="userLabel" class="user-label">Convidado</div>
+    </div>
+  </header>
+
+  <main id="main" class="container" role="main" tabindex="-1">
+    <div id="app"><!-- rendered by JS --></div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal-container" class="modal-backdrop" aria-hidden="true">
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"></div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scripts -->
+  <script src="js/app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+:root{
+  --bg: #f5f8ff;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #6b7280;
+  --primary: #2b6ef6;
+  --accent: #16a34a;
+  --danger: #ef4444;
+  --radius: 12px;
+  --shadow: 0 10px 30px rgba(15,23,42,0.06);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+:root[data-theme="dark"]{
+  --bg:#061026;
+  --card:#071a2c;
+  --text:#e7eef8;
+  --muted:#93a4bf;
+  --primary:#6ea8ff;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:linear-gradient(180deg,var(--bg),#ffffff);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Topbar */
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 20px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+  position:sticky;
+  top:0;
+  z-index:40;
+}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{
+  width:44px;height:44px;border-radius:10px;
+  background:linear-gradient(135deg,var(--primary),#3a6ad9);
+  display:grid;place-items:center;color:white;font-weight:700;
+}
+.app-title{font-weight:700}
+.app-sub{font-size:0.82rem;color:var(--muted)}
+
+/* Nav */
+.nav{display:flex;gap:8px;align-items:center}
+.nav-btn{
+  background:none;border:0;padding:8px 10px;border-radius:10px;cursor:pointer;font-weight:600;color:var(--muted)
+}
+.nav-btn.active{background:rgba(43,110,246,0.12);color:var(--primary)}
+
+/* Actions */
+.actions{display:flex;gap:10px;align-items:center}
+.btn-ghost{background:transparent;border:0;padding:6px 10px;border-radius:8px;cursor:pointer}
+.user-label{font-size:0.9rem;color:var(--muted)}
+
+/* Container grid */
+.container{max-width:1180px;margin:18px auto;padding:0 18px}
+.grid{display:grid;grid-template-columns:320px 1fr;gap:18px}
+@media (max-width:980px){ .grid{grid-template-columns:1fr} .nav{display:none} }
+
+/* Card */
+.card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+h2{margin:0 0 8px 0}
+
+/* sidebar elements */
+.sidebar .avatar{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#ffd166,#ef476f);display:grid;place-items:center;color:white;font-weight:700}
+
+/* lists */
+.list{display:flex;flex-direction:column;gap:8px}
+.habit{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:10px;border:1px solid rgba(15,23,42,0.03)}
+.small{font-size:0.85rem;color:var(--muted)}
+
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+.modal{background:var(--card);padding:18px;border-radius:12px;width:min(720px,96%);box-shadow:0 20px 60px rgba(2,6,23,0.4)}
+.modal h3{margin:0 0 8px 0}
+
+/* toast */
+.toast{position:fixed;right:18px;bottom:18px;background:var(--card);padding:10px 14px;border-radius:10px;box-shadow:0 12px 36px rgba(0,0,0,0.18);opacity:0;transform:translateY(8px);transition:opacity .2s,transform .2s}
+.toast.show{opacity:1;transform:none}
+
+/* buttons */
+button{font-family:inherit}
+.btn-primary{background:var(--primary);color:white;border:0;padding:8px 12px;border-radius:8px;cursor:pointer}
+.btn-secondary{background:var(--muted);color:white;border:0;padding:8px 12px;border-radius:8px}
+
+/* charts containers */
+.charts{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px}
+@media (max-width:700px){ .charts{grid-template-columns:1fr} }
+.canvas-wrap{background:linear-gradient(180deg,rgba(255,255,255,0.8),rgba(245,247,255,0.6));padding:12px;border-radius:10px}
+
+/* helper */
+.helper{font-size:0.85rem;color:var(--muted);margin-top:6px}
+
+/* small list items */
+.row{display:flex;justify-content:space-between;align-items:center}
+.recent-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.recent-item{padding:8px;border-radius:8px;background:rgba(0,0,0,0.02);display:flex;justify-content:space-between;align-items:center}
+
+/* footer */
+footer{margin:30px 0 80px 0;text-align:center;color:var(--muted);font-size:0.9rem}

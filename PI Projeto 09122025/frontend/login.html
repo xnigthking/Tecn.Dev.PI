@@ -1,0 +1,97 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Mundo Fitness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="font-inter bg-gray-50">
+  <!-- Cabeçalho simples -->
+  <header class="bg-white shadow fixed top-0 left-0 w-full z-50">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="img/logoTipo.png" alt="Logo Mundo Fitness" class="h-10">
+        <span class="text-xl font-bold">Mundo Fitness</span>
+      </a>
+      <button id="navToggle" class="lg:hidden text-3xl">☰</button>
+      <nav id="navMenu" class="hidden lg:flex space-x-6">
+        <a href="index.html#inicio" class="hover:text-blue-600">Início</a>
+        <a href="index.html#alimentacao" class="hover:text-blue-600">Alimentação</a>
+        <a href="index.html#exercicio" class="hover:text-blue-600">Exercício</a>
+        <a href="index.html#agua" class="hover:text-blue-600">Hidratação</a>
+        <a href="index.html#planos" class="hover:text-blue-600">Planos</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="flex items-center justify-center h-screen pt-24">
+    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
+      <h1 class="text-3xl font-bold text-center text-blue-600 mb-6">Bem-vindo de volta!</h1>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-semibold mb-1">E-mail</label>
+          <input type="email" id="email"
+            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500"
+            placeholder="seu@email.com" required>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1">Senha</label>
+          <input type="password" id="password"
+            class="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-blue-500" placeholder="********"
+            required>
+        </div>
+        <button type="submit"
+          class="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">Entrar</button>
+      </form>
+      <p class="text-center mt-4 text-gray-600">Não tem uma conta? <a href="register.html"
+          class="text-blue-600 hover:underline">Cadastre-se</a></p>
+    </div>
+  </main>
+
+  <footer class="text-center py-4 text-gray-500">© 2025 Mundo Fitness</footer>
+
+  <script>
+    // Menu toggle mobile
+    const toggle = document.getElementById('navToggle');
+    const menu = document.getElementById('navMenu');
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+      menu.classList.toggle('flex');
+      menu.classList.toggle('flex-col');
+      menu.classList.toggle('space-y-4');
+      menu.classList.toggle('bg-white');
+      menu.classList.toggle('p-4');
+    });
+
+    // Login local
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u => u.email === email && u.password === password);
+      if (user) {
+        sessionStorage.setItem('loggedInUser', JSON.stringify(user));
+        alert('Login realizado com sucesso!');
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Usuário ou senha incorretos.');
+      }
+    });
+  </script>
+</body>
+
+</html>
+</script>
+<script src="js/api.js"></script>
+<script src="js/login.js"></script>
+</body>
+
+</html>
