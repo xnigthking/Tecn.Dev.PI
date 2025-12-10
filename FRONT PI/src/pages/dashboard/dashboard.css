@@ -1,0 +1,409 @@
+/* ==========================================================================
+   dashboard.css — Mundo Fitness (UI Corporativa)
+   - Layout premium estilo Notion + Apple Fitness
+   - Estrutura para engine modular (habits, meals, workouts, hydration, account)
+   - Suporte total para checklists + bulk actions + modals
+   - Dark mode completo
+   ========================================================================== */
+
+/* =====================================
+   Reset & Base
+   ===================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: "Inter", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  height: 100%;
+}
+
+/* =======================
+   Theme Variables
+   ======================= */
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --border: #e5e7eb;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0,0,0,0.06);
+  --transition: 0.25s ease;
+}
+
+[data-theme="dark"] {
+  --bg: #111827;
+  --surface: #1f2937;
+  --text: #f3f4f6;
+  --muted: #9ca3af;
+  --border: #374151;
+  --shadow: 0 6px 14px rgba(0,0,0,0.4);
+}
+
+/* =====================================
+   Layout Principal
+   ===================================== */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.brand {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  background: var(--primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.main-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-item {
+  background: transparent;
+  border: none;
+  padding: .6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--text);
+  transition: var(--transition);
+}
+
+.nav-item:hover {
+  background: var(--border);
+}
+
+.nav-item.active {
+  background: var(--primary);
+  color: white;
+}
+
+.user-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  padding: .4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.icon-btn:hover {
+  background: var(--border);
+}
+
+/* ============================
+   Grid Principal
+   ============================ */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+/* =====================================
+   Cards
+   ===================================== */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.metric {
+  background: var(--surface);
+  padding: 1rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.metric strong {
+  font-size: 1.25rem;
+}
+
+/* =====================================
+   Sidebar
+   ===================================== */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 6rem;
+}
+
+/* =====================================
+   Lists (Habits / Meals / Workouts)
+   ===================================== */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  margin-top: 1rem;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  padding: .9rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  transition: var(--transition);
+}
+
+.list-item:hover {
+  background: var(--border);
+}
+
+.item-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-title.completed {
+  text-decoration: line-through;
+  opacity: .6;
+}
+
+/* check + edit + delete */
+.item-actions {
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+}
+
+.item-check {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* =====================================
+   Bulk Action Buttons
+   ===================================== */
+.bulk-actions {
+  display: flex;
+  gap: .5rem;
+  margin-top: .5rem;
+}
+
+.bulk-actions button {
+  padding: .4rem .7rem;
+  font-size: .85rem;
+}
+
+/* =====================================
+   Buttons
+   ===================================== */
+.btn {
+  padding: .6rem 1.1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: var(--border);
+  color: var(--text);
+}
+
+.btn-outline {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: white;
+}
+
+/* =====================================
+   Modal
+   ===================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(4px);
+  background: rgba(0,0,0,.4);
+  display: grid;
+  place-items: center;
+  z-index: 999;
+}
+
+.modal-box {
+  background: var(--surface);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: min(420px, 90%);
+  animation: fade-up .25s ease;
+}
+
+@keyframes fade-up {
+  from { transform: translateY(14px); opacity: .5; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* =====================================
+   Toast
+   ===================================== */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--primary);
+  color: #fff;
+  padding: .8rem 1.2rem;
+  border-radius: 8px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: .35s ease;
+  z-index: 1000;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =====================================
+   Hydration
+   ===================================== */
+.hydration-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hydration-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.water-row {
+  display: flex;
+  justify-content: space-between;
+  padding: .7rem;
+  border-bottom: 1px solid var(--border);
+}
+
+/* =====================================
+   Account Page
+   ===================================== */
+.account-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.account-section {
+  background: var(--surface);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.account-section h3 {
+  margin-bottom: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: .75rem;
+}
+
+.form-grid input {
+  padding: .65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.form-grid input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+/* =====================================
+   Responsive
+   ===================================== */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-nav {
+    display: none;
+  }
+  .app-header {
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mundo Fitness — Treine com Saúde</title>
+  <meta name="description" content="Treinos personalizados, alimentação saudável, hidratação inteligente e planos sob medida para você.">
+  <!-- Fonte carregada pelo CSS -->
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body class="font-inter bg-gray-50 text-gray-800">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#inicio" class="brand">
+        <img src="/public/img/logoTipo.png" alt="Logo Mundo Fitness" class="logo">
+        <span class="brand-title">Mundo Fitness</span>
+      </a>
+
+      <button id="navToggle" class="nav-toggle" aria-label="Abrir menu">☰</button>
+
+      <nav id="navMenu" class="nav-menu">
+        <a href="#inicio" class="nav-link">Início</a>
+        <a href="#alimentacao" class="nav-link">Alimentação</a>
+        <a href="#exercicio" class="nav-link">Exercício</a>
+        <a href="#agua" class="nav-link">Hidratação</a>
+        <a href="#planos" class="nav-link">Planos</a>
+        <a href="../login/login.html" class="btn-outline">Entrar</a>
+        <a href="../register/register.html" class="btn-primary">Cadastrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio" class="pt-24">
+    <section class="hero">
+      <div class="container hero-inner">
+        <h1 class="hero-title">Seu corpo. Seu ritmo. Seu Mundo Fitness.</h1>
+        <p class="hero-sub">Treinos personalizados, alimentação saudável e lembretes automáticos para transformar sua rotina.</p>
+        <div class="hero-ctas">
+          <a href="../register/register.html" class="btn-white">Comece Agora</a>
+          <a href="#planos" class="btn-ghost">Ver Planos</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="alimentacao" class="section section-white">
+      <div class="container">
+        <h2 class="section-title">🍎 Alimentação Saudável</h2>
+        <p class="section-sub">Descubra o equilíbrio perfeito entre energia e bem-estar. Receba planos e dicas adaptadas ao seu estilo de vida.</p>
+        <div class="grid-3">
+          <img src="/public/img/postAlimentacao.jpg" alt="Pratos saudáveis" class="card-img">
+          <img src="/public/img/postAlimentacao2.jpg" alt="Frutas e legumes" class="card-img">
+          <img src="/public/img/postAlimentacao3.jpg" alt="Fatias de limão" class="card-img">
+        </div>
+      </div>
+    </section>
+
+    <section id="exercicio" class="section section-gray">
+      <div class="container">
+        <h2 class="section-title">💪 Exercícios Personalizados</h2>
+        <p class="section-sub">Monitore seus treinos e veja seu progresso com dicas inteligentes e lembretes automáticos.</p>
+        <div class="grid-3">
+          <img src="/public/img/postExercicio.jpg" alt="Treino diário" class="card-img">
+          <img src="/public/img/postExercicio2.jpg" alt="Alongamento" class="card-img">
+          <img src="/public/img/postExercicio3.jpg" alt="Corrida ao ar livre" class="card-img">
+        </div>
+      </div>
+    </section>
+
+    <section id="agua" class="section section-white text-center">
+      <div class="container">
+        <h2 class="section-title">💧 Hidratação Inteligente</h2>
+        <p class="section-sub">Mantenha-se hidratado com lembretes e conquiste medalhas por metas diárias!</p>
+        <img src="/public/img/postAgua.png" alt="Beber água faz bem" class="img-center card-img max-md">
+      </div>
+    </section>
+
+    <section id="planos" class="section section-gray">
+      <div class="container">
+        <h2 class="section-title">🏆 Planos e Benefícios</h2>
+        <div class="plans-grid">
+          <div class="plan-card plan-basic">
+            <h3 class="plan-title">Gratuito</h3>
+            <p class="plan-desc">Acesse conteúdo básico e crie lembretes manuais.</p>
+            <a href="../register/register.html" class="btn-outline">Experimente</a>
+          </div>
+
+          <div class="plan-card plan-premium">
+            <h3 class="plan-title">Premium</h3>
+            <p class="plan-desc">Treinos personalizados, alertas automáticos e integração com smartwatch.</p>
+            <a href="../register/register.html" class="btn-primary">Assinar</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-cta">
+      <div class="container text-center">
+        <h3 class="cta-title">Quer receber dicas semanais?</h3>
+        <form id="subscribeForm" class="subscribe-form">
+          <input type="email" name="email" placeholder="Seu melhor e-mail" required class="input-email">
+          <button type="submit" class="btn-white-blue">Inscrever</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Mundo Fitness | Todos os direitos reservados</p>
+      <div class="socials">
+        <a href="#" class="social-link">Instagram</a>
+        <a href="#" class="social-link">Facebook</a>
+        <a href="#" class="social-link">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts principais -->
+  <script src="js/scripts.js"></script>
+  <!-- Se tiver api.js e login.js no projeto, mantenha-os se necessário -->
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

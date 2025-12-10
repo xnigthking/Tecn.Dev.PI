@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Mundo Fitness</title>
+  <meta name="description" content="Acesse sua conta Mundo Fitness e continue sua jornada de saúde e bem-estar.">
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index/index.html" class="brand">
+        <img src="/public/img/logoTipo.png" alt="Logo Mundo Fitness" class="logo">
+        <span class="brand-title">Mundo Fitness</span>
+      </a>
+
+      <button id="navToggle" class="nav-toggle" aria-label="Abrir menu">☰</button>
+
+      <nav id="navMenu" class="nav-menu">
+        <a href="../index/index.html#inicio" class="nav-link">Início</a>
+        <a href="../index/index.html#alimentacao" class="nav-link">Alimentação</a>
+        <a href="../index/index.html#exercicio" class="nav-link">Exercício</a>
+        <a href="../index/index.html#agua" class="nav-link">Hidratação</a>
+        <a href="../index/index.html#planos" class="nav-link">Planos</a>
+        <a href="../login/login.html" class="btn-outline active">Entrar</a>
+        <a href="../register/register.html" class="btn-primary">Cadastrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Login -->
+  <main class="login-container">
+    <div class="login-box">
+      <h1 class="login-title">Acessar Conta</h1>
+      <form id="loginForm" class="login-form">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" placeholder="********" required>
+        </div>
+
+        <div class="login-actions">
+          <a href="#" id="forgotLink" class="forgot-link">Esqueceu sua senha?</a>
+        </div>
+
+        <button type="submit" class="btn-login">Entrar</button>
+      </form>
+      <p class="login-footer">Não tem uma conta? <a href="../register/register.html">Cadastre-se</a></p>
+    </div>
+  </main>
+
+  <!-- Modal Esqueceu Senha -->
+  <div id="forgotModal" class="modal-overlay">
+    <div class="modal-content">
+      <h2 class="modal-title">Redefinir Senha</h2>
+      <p class="modal-sub">Informe seu e-mail para enviarmos um link de redefinição.</p>
+      <form id="forgotForm" class="forgot-form">
+        <input type="email" id="forgotEmail" placeholder="seu@email.com" required>
+        <div class="modal-buttons">
+          <button type="submit" class="btn-primary">Enviar</button>
+          <button type="button" id="closeModal" class="btn-outline">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Mundo Fitness | Todos os direitos reservados</p>
+      <div class="socials">
+        <a href="#" class="social-link">Instagram</a>
+        <a href="#" class="social-link">Facebook</a>
+        <a href="#" class="social-link">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="login.js"></script>
+</body>
+</html>

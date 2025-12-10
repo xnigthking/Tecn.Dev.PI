@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mundo Fitness — Painel do Usuário</title>
+  <meta name="description" content="Painel Mundo Fitness — controle de hábitos, treinos, hidratação e nutrição." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="dashboard.css" />
+
+  <style>
+    /* garante que backdrop escondido não aparece por CSS */
+    #modal-backdrop[hidden] { display: none !important; }
+    /* estilos mínimos inline para clareza (remova/adeque ao seu CSS) */
+    .item-title.completed { text-decoration: line-through; opacity: 0.7; }
+    .bulk-controls { display:flex; gap:0.5rem; align-items:center; }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main" style="position:absolute;left:-999px;">Ir para o conteúdo</a>
+
+  <header class="app-header" role="banner">
+    <div class="brand">
+      <div class="brand-logo">MF</div>
+      <div class="brand-text">
+        <h1>Mundo Fitness</h1>
+        <p>Painel do Usuário</p>
+      </div>
+    </div>
+
+    <nav class="main-nav" role="navigation" aria-label="Menu principal">
+      <button class="nav-item active" data-section="home" type="button">Início</button>
+      <button class="nav-item" data-section="habits" type="button">Hábitos</button>
+      <button class="nav-item" data-section="meals" type="button">Refeições</button>
+      <button class="nav-item" data-section="workouts" type="button">Treinos</button>
+      <button class="nav-item" data-section="hydration" type="button">Hidratação</button>
+      <button class="nav-item" data-section="account" type="button">Conta</button>
+    </nav>
+
+    <div class="user-actions" role="region" aria-label="Ações do usuário">
+      <button id="themeToggle" class="icon-btn" title="Alternar tema">🌗</button>
+      <span id="userLabel" class="user-name">Usuário</span>
+      <button id="btnLogout" class="icon-btn danger" title="Sair">⎋</button>
+    </div>
+  </header>
+
+  <main id="main" class="dashboard-grid" role="main" tabindex="-1">
+
+    <!-- HOME: apenas resumo -->
+    <section id="view-home" class="view" data-title="Resumo de Hoje" aria-label="Resumo de Hoje">
+      <div class="card card-large">
+        <div class="card-header">
+          <h2>Resumo de Hoje</h2>
+        </div>
+
+        <div id="summaryGrid" class="summary-grid" aria-live="polite"></div>
+
+        <div class="chart-wrap">
+          <canvas id="chartResumo" height="220" aria-label="Gráfico resumo"></canvas>
+        </div>
+      </div>
+
+      <div class="card ai-card">
+        <div class="card-header"><h3>Dica Inteligente 💡</h3></div>
+        <p id="aiTip" class="ai-text">Carregando sugestão...</p>
+      </div>
+    </section>
+
+    <!-- HABITS -->
+    <section id="view-habits" class="view" data-title="Hábitos" hidden>
+      <div class="card">
+        <div class="card-header between">
+          <h2>Meus Hábitos</h2>
+          <div class="bulk-controls">
+            <button id="addHabit" class="btn btn-primary" data-action="open-add">+ Adicionar</button>
+            <button id="markAllHabits" class="btn btn-outline" data-action="mark-all">Marcar todos</button>
+            <button id="bulkMarkHabits" class="btn btn-secondary" data-action="mark-selected">Marcar selecionados</button>
+            <button id="bulkDeleteHabits" class="btn btn-danger" data-action="delete-selected">Remover selecionados</button>
+          </div>
+        </div>
+
+        <ul id="habitList" class="list" aria-live="polite"></ul>
+        <div id="habitEmpty" class="muted" aria-hidden="true">Nenhum hábito. Clique em + Adicionar.</div>
+      </div>
+    </section>
+
+    <!-- MEALS -->
+    <section id="view-meals" class="view" data-title="Refeições" hidden>
+      <div class="card">
+        <div class="card-header between">
+          <h2>Refeições</h2>
+          <div class="bulk-controls">
+            <button id="addMeal" class="btn btn-primary" data-action="open-add">+ Registrar</button>
+            <button id="markAllMeals" class="btn btn-outline" data-action="mark-all">Marcar todos</button>
+            <button id="bulkMarkMeals" class="btn btn-secondary" data-action="mark-selected">Marcar selecionados</button>
+            <button id="bulkDeleteMeals" class="btn btn-danger" data-action="delete-selected">Remover selecionados</button>
+          </div>
+        </div>
+
+        <ul id="mealList" class="list" aria-live="polite"></ul>
+        <div id="mealEmpty" class="muted" aria-hidden="true">Nenhuma refeição registrada.</div>
+      </div>
+    </section>
+
+    <!-- WORKOUTS -->
+    <section id="view-workouts" class="view" data-title="Treinos" hidden>
+      <div class="card">
+        <div class="card-header between">
+          <h2>Treinos</h2>
+          <div class="bulk-controls">
+            <button id="addWorkout" class="btn btn-primary" data-action="open-add">+ Novo Treino</button>
+            <button id="markAllWorkouts" class="btn btn-outline" data-action="mark-all">Marcar todos</button>
+            <button id="bulkMarkWorkouts" class="btn btn-secondary" data-action="mark-selected">Marcar selecionados</button>
+            <button id="bulkDeleteWorkouts" class="btn btn-danger" data-action="delete-selected">Remover selecionados</button>
+          </div>
+        </div>
+
+        <ul id="workoutList" class="list" aria-live="polite"></ul>
+        <div id="workoutEmpty" class="muted" aria-hidden="true">Nenhum treino registrado.</div>
+      </div>
+    </section>
+
+    <!-- HYDRATION -->
+    <section id="view-hydration" class="view" data-title="Hidratação" hidden>
+      <div class="card card-center">
+        <h2>Controle de Hidratação</h2>
+
+        <div id="hydrationDisplay" class="hydration-circle" aria-live="polite"></div>
+
+        <div class="hydration-actions">
+          <div class="btn-group">
+            <button id="subWater" class="btn btn-secondary" data-action="decrement">– 250 ml</button>
+            <button id="addWater" class="btn btn-primary" data-action="increment">+ 250 ml</button>
+          </div>
+
+          <div class="meta-controls">
+            <button id="setGoal" class="btn btn-outline" data-action="open-goal">Definir Meta</button>
+            <button id="viewWaterLog" class="btn btn-outline" data-action="open-log">Ver Histórico</button>
+          </div>
+        </div>
+
+        <div id="waterLogWrap" class="card small" aria-label="Histórico de água">
+          <h3>Histórico</h3>
+          <div class="bulk-controls">
+            <button id="bulkMarkWater" class="btn btn-secondary" data-action="mark-selected">Marcar selecionados</button>
+            <button id="bulkDeleteWater" class="btn btn-danger" data-action="delete-selected">Remover selecionados</button>
+          </div>
+          <ul id="waterLogList" class="list"></ul>
+          <div id="waterLogEmpty" class="muted" aria-hidden="true">Nenhum registro ainda.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCOUNT (nível avançado) -->
+    <section id="view-account" class="view" data-title="Conta" hidden>
+      <div class="card">
+        <h2>Conta & Segurança</h2>
+
+        <form id="profileForm" class="form-grid" aria-label="Formulário de perfil">
+          <label for="profileName">Nome completo</label>
+          <input id="profileName" name="profileName" type="text" placeholder="Seu nome" required />
+
+          <label for="profileEmail">E-mail</label>
+          <div class="inline-field">
+            <input id="profileEmail" name="profileEmail" type="email" required />
+            <button id="verifyEmailBtn" class="btn btn-outline" type="button">Verificar</button>
+          </div>
+
+          <label for="profilePhone">Telefone</label>
+          <div class="inline-field">
+            <input id="profilePhone" name="profilePhone" type="tel" placeholder="+55..." />
+            <button id="verifyPhoneBtn" class="btn btn-outline" type="button">Verificar</button>
+          </div>
+
+          <label for="profileAvatar">Avatar (URL)</label>
+          <input id="profileAvatar" name="profileAvatar" type="url" />
+
+          <div class="form-actions">
+            <button id="saveProfileBtn" class="btn btn-primary" type="submit">Salvar perfil</button>
+          </div>
+        </form>
+
+        <hr />
+
+        <form id="passwordForm" class="form-grid" aria-label="Alterar senha">
+          <label for="currentPassword">Senha atual</label>
+          <input id="currentPassword" name="currentPassword" type="password" required />
+
+          <label for="newPassword">Nova senha</label>
+          <input id="newPassword" name="newPassword" type="password" required />
+
+          <label for="confirmPassword">Confirmar nova senha</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" required />
+
+          <div class="form-actions">
+            <button id="changePassBtn" class="btn btn-primary" type="submit">Alterar senha</button>
+          </div>
+        </form>
+
+        <hr />
+
+        <div class="security-section">
+          <h3>Segurança adicional</h3>
+          <div>
+            <label for="twofaToggle">2FA</label>
+            <button id="twofaToggle" class="btn btn-outline" type="button">Ativar/Desativar</button>
+          </div>
+
+          <div>
+            <h4>Sessões ativas</h4>
+            <div id="activeSessions" class="muted">Carregando...</div>
+            <div class="form-actions">
+              <button id="revokeAllSessions" class="btn btn-danger">Encerrar todas as sessões</button>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="danger-area">
+          <h3>Excluir Conta</h3>
+          <p class="muted">A exclusão é irreversível.</p>
+          <div class="form-actions">
+            <button id="startDeleteAccount" class="btn btn-danger" data-action="start-delete">Excluir Conta</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" role="complementary" aria-label="Painel lateral">
+      <div class="card side-summary">
+        <h3>Resumo Semanal</h3>
+        <div class="weekly-summary">
+          <div class="summary-box"><strong id="weeklyHabits">0</strong><span>hábitos</span></div>
+          <div class="summary-box"><strong id="weeklyWorkouts">0</strong><span>treinos</span></div>
+          <div class="summary-box"><strong id="weeklyHydration">0%</strong><span>hidratação</span></div>
+        </div>
+      </div>
+
+      <div class="card quick-actions" aria-hidden="false">
+        <h3>Ações Rápidas</h3>
+        <div class="quick-grid">
+          <!-- criar -->
+          <button id="quickAddHabit" class="btn btn-primary">+ Hábito</button>
+          <button id="quickAddMeal" class="btn btn-secondary">+ Refeição</button>
+          <button id="quickAddWorkout" class="btn btn-outline">+ Treino</button>
+
+          <!-- remover selecionados em massa -->
+          <button id="quickDeleteSelected" class="btn btn-danger" title="Remover selecionados">– Remover selecionados</button>
+
+          <!-- marcar selecionados em massa -->
+          <button id="quickMarkSelected" class="btn btn-success" title="Marcar selecionados">✓ Marcar selecionados</button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- MODAL (container único; JS decide comportamento) -->
+  <div id="modal-backdrop" class="modal-backdrop" hidden aria-hidden="true">
+    <div id="modal-content" class="modal-box" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- TEMPLATES -->
+  <template id="tpl-list-item">
+    <li class="list-item" data-id="">
+      <label class="item-left">
+        <input type="checkbox" class="item-check" data-action="toggle-complete" />
+        <span class="item-title"></span>
+        <small class="item-sub"></small>
+      </label>
+      <div class="item-actions">
+        <button class="btn btn-ghost" data-action="edit">Editar</button>
+        <button class="btn btn-ghost danger" data-action="delete">Excluir</button>
+      </div>
+    </li>
+  </template>
+
+  <!-- Chart.js + engine (defer) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <script src="dashboard.js" defer></script>
+</body>
+</html>
