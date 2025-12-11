@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro — Mundo Fitness</title>
+  <meta name="description" content="Crie sua conta no Mundo Fitness e tenha acesso a treinos, nutrição e metas personalizadas.">
+  <link rel="stylesheet" href="register.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="../index/index.html" class="brand">
+        <img src="/public/img/logoTipo.png" alt="Logo Mundo Fitness" class="logo">
+        <span class="brand-title">Mundo Fitness</span>
+      </a>
+
+      <button id="navToggle" class="nav-toggle" aria-label="Abrir menu">☰</button>
+
+      <nav id="navMenu" class="nav-menu">
+        <a href="../index/index.html#inicio" class="nav-link">Início</a>
+        <a href="../index/index.html#alimentacao" class="nav-link">Alimentação</a>
+        <a href="../index/index.html#exercicio" class="nav-link">Exercício</a>
+        <a href="../index/index.html#agua" class="nav-link">Hidratação</a>
+        <a href="../index/index.html#planos" class="nav-link">Planos</a>
+        <a href="../login/login.html" class="btn-outline">Entrar</a>
+        <a href="../register/register.html" class="btn-primary active">Cadastrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Registro -->
+  <main class="register-container">
+    <div class="register-box">
+      <h1 class="register-title">Crie sua Conta</h1>
+      <form id="registerForm" class="register-form">
+        <div class="form-group">
+          <label for="name">Nome</label>
+          <input type="text" id="name" placeholder="Seu nome completo" required>
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" placeholder="********" required>
+        </div>
+        <button type="submit" class="btn-register">Cadastrar</button>
+      </form>
+      <p class="register-footer">Já possui uma conta? <a href="../login/login.html">Entrar</a></p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© 2025 Mundo Fitness | Todos os direitos reservados</p>
+      <div class="socials">
+        <a href="#" class="social-link">Instagram</a>
+        <a href="#" class="social-link">Facebook</a>
+        <a href="#" class="social-link">YouTube</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="register.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+/* ==============================================
+   🌊 Mundo Fitness Dashboard — Design Premium 2.1
+   ============================================== */
+:root {
+  --color-primary: #0077b6;
+  --color-primary-light: #0096c7;
+  --color-secondary: #00b4d8;
+  --color-accent: #48cae4;
+  --color-bg: #f5f9fc;
+  --color-card: #ffffff;
+  --color-border: #dbe3ec;
+  --color-text: #1a1a1a;
+  --color-muted: #6b7280;
+  --color-danger: #d62828;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md: 0 3px 6px rgba(0,0,0,0.12);
+  --shadow-lg: 0 6px 12px rgba(0,0,0,0.18);
+
+  --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+}
+
+/* ========================
+   RESET / BASE
+   ======================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+
+.container {
+  width: min(1200px, 92%);
+  margin: 0 auto;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+p {
+  color: var(--color-muted);
+}
+
+/* ========================
+   HEADER / NAVEGAÇÃO
+   ======================== */
+.site-header {
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.logo {
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(255,255,255,0.2);
+}
+
+.brand-title {
+  font-weight: 700;
+  color: white;
+  font-size: 1.3rem;
+  letter-spacing: 0.3px;
+}
+
+.top-nav {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.nav-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #dbe9f4;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-btn:hover {
+  color: #ffffff;
+  background: rgba(255,255,255,0.15);
+}
+
+.nav-btn.active {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary));
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-name {
+  color: white;
+  font-weight: 500;
+}
+
+.btn-logout {
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.15s ease;
+}
+
+.btn-logout:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.05);
+}
+
+/* ========================
+   LAYOUT PRINCIPAL
+   ======================== */
+.main-grid {
+  display: block;
+  padding: 2rem 0 3rem;
+  min-height: calc(100vh - 160px);
+}
+
+/* ========================
+   MÓDULOS
+   ======================== */
+.module {
+  background: var(--color-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--color-border);
+  transition: box-shadow 0.3s ease, transform 0.25s ease;
+}
+
+.module:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.module-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+}
+
+.module-header h1,
+.module-header h2 {
+  margin-bottom: 0.25rem;
+}
+
+.module-sub {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.module-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.action-btn:hover {
+  background: var(--color-primary-light);
+}
+
+/* ========================
+   OVERVIEW CARDS (Página inicial)
+   ======================== */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.overview-card {
+  background: linear-gradient(135deg, #ffffff, #f0faff);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.2rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.overview-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.overview-card h3 {
+  color: var(--color-primary);
+  margin-bottom: 0.4rem;
+}
+
+.summary-line-1 {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.summary-line-2 {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+/* ========================
+   FORMULÁRIOS / CAMPOS
+   ======================== */
+.form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+input, select {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  transition: border 0.25s ease, box-shadow 0.25s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--color-primary-light);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0,183,255,0.15);
+}
+
+/* ========================
+   BOTÕES GERAIS
+   ======================== */
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-secondary));
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: var(--color-danger);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.btn-danger:hover {
+  background: #a61b1b;
+}
+
+/* ===== Ajuste mágico: botões da seção CONTA ===== */
+#form-conta .form-actions {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+#form-conta .btn-primary,
+#form-conta .btn-danger {
+  min-width: 180px;
+}
+
+/* ========================
+   LISTAS DE CARDS
+   ======================== */
+.card-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+.card-item {
+  background: #f9fcff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem 1rem;
+  margin-bottom: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-item:hover {
+  transform: translateX(3px);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-title {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.card-meta-1 {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.card-meta-2 {
+  font-size: 0.8rem;
+  color: #8a8f99;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.card-action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-primary);
+  font-size: 1rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.card-action-btn:hover {
+  transform: scale(1.15);
+  color: var(--color-primary-light);
+}
+
+/* ========================
+   FOOTER
+   ======================== */
+.site-footer {
+  text-align: center;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-muted);
+  background: #f9fcff;
+  font-size: 0.9rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.site-footer p {
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ===== Correção mágica: proporção do footer ===== */
+body:has(#inicio:target) .site-footer {
+  margin-top: 2rem;
+}
+
+/* ========================
+   RESPONSIVIDADE
+   ======================== */
+@media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .top-nav {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .nav-btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .module-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .module-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #form-conta .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

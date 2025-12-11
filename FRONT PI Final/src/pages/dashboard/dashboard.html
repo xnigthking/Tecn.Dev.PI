@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mundo Fitness — Painel do Usuário</title>
+  <meta name="description" content="Painel Mundo Fitness — controle de hábitos, treinos, hidratação e nutrição.">
+
+  <!-- CSS principal (coloque seu dashboard.css nesse caminho) -->
+  <link rel="stylesheet" href="/src/pages/dashboard/dashboard.css">
+
+  <!-- Meta / Prefetch (opcional) -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body class="app-root">
+
+  <!-- ======================
+       HEADER / NAVEGAÇÃO
+       ====================== -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+
+      <a href="#inicio" class="brand" aria-label="Mundo Fitness — Página inicial">
+        <img src="/public/img/logoTipo.png" alt="Logo Mundo Fitness" class="logo" width="44" height="44">
+        <span class="brand-title">Mundo Fitness</span>
+      </a>
+
+      <nav class="top-nav" role="navigation" aria-label="Navegação principal">
+        <!-- buttons controlam visibilidade das sections via JS -->
+        <button class="nav-btn active" data-target="inicio" aria-pressed="true">Início</button>
+        <button class="nav-btn" data-target="habitos">Hábitos</button>
+        <button class="nav-btn" data-target="refeicoes">Refeições</button>
+        <button class="nav-btn" data-target="treinos">Treinos</button>
+        <button class="nav-btn" data-target="hidratacao">Hidratação</button>
+        <button class="nav-btn" data-target="agenda">Agenda</button>
+        <button class="nav-btn" data-target="conta">Conta</button>
+      </nav>
+
+      <div class="header-actions">
+
+  <!-- Nome do usuário dinâmico -->
+  <span id="user-display" 
+        class="user-name" 
+        data-user-name="">
+        <!-- O JS insere o nome aqui, ex: “Luis Eduardo” -->
+  </span>
+
+  <!-- Botão de logout separado do nome -->
+  <button id="logout-btn" 
+          class="btn-logout" 
+          aria-label="Encerrar sessão">
+    Sair
+  </button>
+
+</div>
+
+  </header>
+
+  <!-- ======================
+       MAIN LAYOUT
+       ====================== -->
+  <main id="main" role="main" class="container main-grid">
+
+    <!-- ======================================================
+         SECTION: INÍCIO (Resumo agregado — mostra pontos principais
+         dos outros módulos; sempre visível por padrão)
+         ====================================================== -->
+    <section id="inicio" class="module module--home" aria-labelledby="titulo-inicio">
+      <header class="module-header">
+        <div>
+          <h1 id="titulo-inicio">Início</h1>
+          <p class="module-sub">Resumo rápido das atividades e metas do dia.</p>
+        </div>
+        <div class="module-actions">
+          <button class="action-btn" id="refresh-overview" aria-label="Atualizar resumo">Atualizar</button>
+        </div>
+      </header>
+
+      <div class="module-grid">
+        <!-- Breves cartões resumo — o JS preencherá esses blocos -->
+        <div class="overview-card" data-summary-for="habitos" aria-live="polite">
+          <h3>Hábitos</h3>
+          <p class="summary-line-1">3/5 concluídos</p>
+          <p class="summary-line-2">Próximo: Caminhada às 07:00</p>
+        </div>
+
+        <div class="overview-card" data-summary-for="refeicoes" aria-live="polite">
+          <h3>Refeições</h3>
+          <p class="summary-line-1">2 registradas</p>
+          <p class="summary-line-2">Próxima: Almoço às 12:30</p>
+        </div>
+
+        <div class="overview-card" data-summary-for="treinos" aria-live="polite">
+          <h3>Treinos</h3>
+          <p class="summary-line-1">Treino de pernas — Hoje</p>
+          <p class="summary-line-2">Duração prevista: 45 min</p>
+        </div>
+
+        <div class="overview-card" data-summary-for="hidratacao" aria-live="polite">
+          <h3>Hidratação</h3>
+          <p class="summary-line-1"><strong id="overview-water">750</strong> / 2000 ml</p>
+          <p class="summary-line-2">Último registro: 09:30 — 250 ml</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION: HÁBITOS (BLOCO PREMIUM)
+         ====================================================== -->
+    <section id="habitos" class="module" aria-labelledby="titulo-habitos" hidden>
+      <header class="module-header">
+        <div>
+          <h2 id="titulo-habitos">Meus Hábitos</h2>
+          <p class="module-sub">Organize sua rotina diária — criar, editar, concluir.</p>
+        </div>
+        <div class="module-actions">
+          <button class="action-btn" data-action="export" data-module="habitos">Exportar</button>
+        </div>
+      </header>
+
+      <!-- Formulário em formato de CARD -->
+      <div class="module-form card-form" aria-hidden="false">
+        <form id="form-habitos" class="form-grid" novalidate>
+          <div class="form-row">
+            <label for="habito-nome">Novo hábito</label>
+            <input id="habito-nome" name="nome" type="text" placeholder="Ex: Caminhar 30 min" required>
+          </div>
+
+          <div class="form-row">
+            <label for="habito-frequencia">Frequência</label>
+            <select id="habito-frequencia" name="frequencia">
+              <option value="diario">Diário</option>
+              <option value="semanal">Semanal</option>
+              <option value="ocasional">Ocasional</option>
+            </select>
+          </div>
+
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">Adicionar hábito</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Lista de cards -->
+      <div class="module-list-wrapper">
+        <ul id="lista-habitos" class="card-list" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION: REFEIÇÕES (BLOCO PREMIUM)
+         ====================================================== -->
+    <section id="refeicoes" class="module" aria-labelledby="titulo-refeicoes" hidden>
+      <header class="module-header">
+        <div>
+          <h2 id="titulo-refeicoes">Minhas Refeições</h2>
+          <p class="module-sub">Registre refeições, calorias e notas.</p>
+        </div>
+      </header>
+
+      <div class="module-form card-form">
+        <form id="form-refeicoes" class="form-grid" novalidate>
+          <div class="form-row">
+            <label for="refeicao-nome">Nome da refeição</label>
+            <input id="refeicao-nome" name="nome" type="text" placeholder="Ex: Café da manhã saudável" required>
+          </div>
+
+          <div class="form-row">
+            <label for="refeicao-horario">Horário</label>
+            <input id="refeicao-horario" name="horario" type="time">
+          </div>
+
+          <div class="form-row">
+            <label for="refeicao-calorias">Calorias (opcional)</label>
+            <input id="refeicao-calorias" name="calorias" type="number" min="0" step="1" placeholder="350">
+          </div>
+
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">Registrar refeição</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="module-list-wrapper">
+        <ul id="lista-refeicoes" class="card-list" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION: TREINOS (BLOCO PREMIUM)
+         ====================================================== -->
+    <section id="treinos" class="module" aria-labelledby="titulo-treinos" hidden>
+      <header class="module-header">
+        <div>
+          <h2 id="titulo-treinos">Meus Treinos</h2>
+          <p class="module-sub">Planeje exercícios, duração e observações.</p>
+        </div>
+      </header>
+
+      <div class="module-form card-form">
+        <form id="form-treinos" class="form-grid" novalidate>
+          <div class="form-row">
+            <label for="treino-nome">Nome do treino</label>
+            <input id="treino-nome" name="nome" type="text" placeholder="Ex: Treino de pernas" required>
+          </div>
+
+          <div class="form-row">
+            <label for="treino-duracao">Duração (min)</label>
+            <input id="treino-duracao" name="duracao" type="number" min="1" step="1" placeholder="45">
+          </div>
+
+          <div class="form-row">
+            <label for="treino-grupo">Grupo muscular</label>
+            <input id="treino-grupo" name="grupo" type="text" placeholder="Ex: Pernas">
+          </div>
+
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">Adicionar treino</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="module-list-wrapper">
+        <ul id="lista-treinos" class="card-list" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION: HIDRATAÇÃO (BLOCO PREMIUM)
+         ====================================================== -->
+    <section id="hidratacao" class="module" aria-labelledby="titulo-hidratacao" hidden>
+      <header class="module-header">
+        <div>
+          <h2 id="titulo-hidratacao">Hidratação</h2>
+          <p class="module-sub">Meta diária e registros rápidos de ingestão.</p>
+        </div>
+      </header>
+
+      <div class="module-form card-form">
+        <form id="form-hidratacao" class="form-grid" novalidate>
+          <div class="form-row">
+            <label for="meta-hidratacao">Meta diária (ml)</label>
+            <input id="meta-hidratacao" name="meta" type="number" min="0" placeholder="2000" required>
+          </div>
+
+          <div class="form-row">
+            <label for="registro-agua">Registrar ingestão (ml)</label>
+            <input id="registro-agua" name="registro" type="number" min="0" placeholder="250">
+          </div>
+
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">Salvar meta / registrar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="module-list-wrapper">
+        <ul id="historico-agua" class="card-list" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION: AGENDA (BLOCO PREMIUM)
+         ====================================================== -->
+    <section id="agenda" class="module" aria-labelledby="titulo-agenda" hidden>
+      <header class="module-header">
+        <div>
+          <h2 id="titulo-agenda">Agenda Semanal</h2>
+          <p class="module-sub">Adicione tarefas, compromissos e lembretes por dia.</p>
+        </div>
+      </header>
+
+      <div class="module-form card-form">
+        <form id="form-agenda" class="form-grid" novalidate>
+          <div class="form-row">
+            <label for="dia-semana">Dia</label>
+            <select id="dia-semana" name="dia">
+              <option value="seg">Segunda</option>
+              <option value="ter">Terça</option>
+              <option value="qua">Quarta</option>
+              <option value="qui">Quinta</option>
+              <option value="sex">Sexta</option>
+              <option value="sab">Sábado</option>
+              <option value="dom">Domingo</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <label for="atividade">Atividade</label>
+            <input id="atividade" name="atividade" type="text" placeholder="Ex: Treino + Leitura" required>
+          </div>
+
+          <div class="form-row form-actions">
+            <button type="submit" class="btn-primary">Adicionar</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="module-list-wrapper">
+        <ul id="lista-agenda" class="card-list" aria-live="polite"></ul>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         SECTION: CONTA (BLOCO PREMIUM)
+         ====================================================== -->
+    <section id="conta" class="module" aria-labelledby="titulo-conta" hidden>
+      <header class="module-header">
+        <div>
+          <h2 id="titulo-conta">Minha Conta</h2>
+          <p class="module-sub">Gerencie seus dados e preferências.</p>
+        </div>
+      </header>
+
+      <div class="module-form card-form">
+        <form id="form-conta" class="form-grid" novalidate>
+          <div class="form-row">
+            <label for="nome">Nome</label>
+            <input id="nome" name="nome" type="text" placeholder="Seu nome completo">
+          </div>
+
+          <div class="form-row">
+            <label for="email">E-mail</label>
+            <input id="email" name="email" type="email" placeholder="email@exemplo.com">
+          </div>
+
+          <div class="form-row">
+            <label for="telefone">Telefone</label>
+            <input id="telefone" name="telefone" type="tel" placeholder="+55...">
+          </div>
+
+          <div class="form-row">
+            <label for="senha">Nova senha</label>
+            <input id="senha" name="senha" type="password" placeholder="•••••••">
+          </div>
+
+          <div class="form-row form-actions">
+            <button type="button" id="salvar-conta" class="btn-primary">Salvar alterações</button>
+            <button type="button" id="excluir-conta" class="btn-danger">Excluir conta</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer role="contentinfo" class="site-footer">
+    <div class="container">
+      <p>Mundo Fitness © <span id="copyright-year">2025</span> — Estrutura Base Pronta para Desenvolvimento</p>
+    </div>
+  </footer>
+
+  <!-- ======================
+       TEMPLATE: CARD UNIVERSAL (para cloning via JS)
+       ====================== -->
+  <template id="template-card">
+    <li class="card-item" role="listitem" data-id="" data-module="">
+      <div class="card-main">
+        <label class="card-check-wrapper" aria-hidden="false">
+          <input type="checkbox" class="card-check" aria-label="Marcar como concluído">
+          <span class="check-visual" aria-hidden="true"></span>
+        </label>
+
+        <div class="card-info">
+          <h3 class="card-title">Título do item</h3>
+          <p class="card-meta-1">Linha primária — ex: Manhã — Café</p>
+          <p class="card-meta-2">Linha secundária — ex: Calorias: 350 • Proteínas: 20g</p>
+        </div>
+      </div>
+
+      <div class="card-actions">
+        <button class="card-action-btn btn-ghost" data-action="open" aria-label="Abrir detalhes">🔍</button>
+        <button class="card-action-btn btn-ghost" data-action="edit" aria-label="Editar item">✏️</button>
+        <button class="card-action-btn btn-ghost" data-action="delete" aria-label="Excluir item">🗑️</button>
+        <button class="card-menu" aria-haspopup="true" aria-label="Mais ações">⋮</button>
+      </div>
+    </li>
+  </template>
+
+  <!-- JS principal (coloque seu dashboard.js nesse caminho) -->
+ <script type="module" src="/src/pages/dashboard/dashboard.js" defer></script> 
+</body>
+</html>
